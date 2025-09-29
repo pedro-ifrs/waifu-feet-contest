@@ -43,6 +43,7 @@ end
 function GameLogic.nextPhoto()
     GameDataManager.advancePhoto()
     if GameDataManager.isGameOver() then
+        GameDataManager.calculateWinner()
         GameStateManager.changeState(GameStateManager.gameStates.PRE_ANNOUNCEMENT)
     end
 end

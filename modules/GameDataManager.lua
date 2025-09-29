@@ -12,7 +12,7 @@ GameDataManager.gameData = {
     currentPhoto = 1,
     totalPhotos = 25,
     photos = {},
-    playerChoices = {}, -- Track player's Yes/No choices for each photo
+    playerChoices = {}, -- Track player\'s Yes/No choices for each photo
     images = {}, -- Store loaded images
     sounds = {} -- Store loaded sounds
 }
@@ -25,8 +25,8 @@ function GameDataManager.initializeGame()
         GameDataManager.gameData.waifus[i].totalPhotos = 0
     end
     
-    -- Select random winner
-    GameDataManager.gameData.winner = math.random(1, 5)
+    -- Winner will be determined based on player interaction at the end of the game
+    GameDataManager.gameData.winner = nil
     
     -- Generate photo sequence: exactly 5 photos per waifu (5 waifus × 5 photos = 25 total)
     GameDataManager.gameData.photos = {}
@@ -83,6 +83,20 @@ end
 
 function GameDataManager.recordPlayerChoice(photoIndex, choice)
     GameDataManager.gameData.playerChoices[photoIndex] = choice
+end
+
+function GameDataManager.calculateWinner()
+    local winningWaifuIndex = 1
+    local highestAffection = -9999
+
+    for i = 1, #GameDataManager.gameData.waifus do
+        if GameDataManager.gameData.waifus[i].affection > highestAffection then
+            highestAffection = GameDataManager.gameData.waifus[i].affection
+            winningWaifuIndex = i
+        end
+    end
+    GameDataManager.gameData.winner = winningWaifuIndex
+    return winningWaifuIndex
 end
 
 return GameDataManager
